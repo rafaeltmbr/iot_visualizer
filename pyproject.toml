@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "iot_visualizer"
+version = "0.1.0"
+description = ""
+authors = ["Rafhael Payão <rafaeltmbr@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.79.0"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+pydantic = "^1.9.1"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+dev = "iot_visualizer.iot_visualizer:dev"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
