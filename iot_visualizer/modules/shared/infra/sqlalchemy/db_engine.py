@@ -14,6 +14,4 @@ config = DBConfig(
 
 print('Database URL:', config.url())
 
-is_production = getenv('PYTHON_ENV') == 'production'
-
-db_engine = create_engine(config.url(), echo=not is_production, future=True)
+db_engine = create_engine(config.url(), echo=getenv('DB_LOGS') == 'true', future=True)
