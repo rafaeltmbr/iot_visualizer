@@ -1,5 +1,5 @@
-from http.client import HTTPException
-from iot_visualizer.modules.device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
+from ....shared.utils.AppError import AppError, ErrorType
+from .....modules.device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 
 
 class ShowDeviceService:
@@ -10,6 +10,6 @@ class ShowDeviceService:
         user = self.device_repository.show(id)
 
         if not user:
-            raise Exception('Device not found')
+            raise AppError(ErrorType.DEVICE_NOT_FOUND)
 
         return user

@@ -5,7 +5,7 @@ from ....device.infra.http.routes.device_routes import device_router
 
 from ..sqlalchemy.db_engine import db_engine
 from ..sqlalchemy.models.Base import Base
-from .middlewares.RouteHandler import execpetion_handler_middleware
+from .middlewares.exception_middleware import excepetion_middleware
 
 class App:
     def __init__(self):
@@ -15,7 +15,7 @@ class App:
         self.database()
 
     def middlewares(self):
-        self.app.middleware('http')(execpetion_handler_middleware)
+        self.app.middleware('http')(excepetion_middleware)
 
     def routes(self):
         self.app.include_router(user_router)
