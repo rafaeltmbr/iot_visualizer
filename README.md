@@ -2,6 +2,8 @@
 
 Visualize IoT device readings in a nice and well organized dashboard.
 
+![Attributes Screen](docs/assets/images/attributes-screen.png)
+
 ## Installation
 
 Poetry is the package manager used in this project. In order to setup the inital configuration and download the dependencies run the following command:
