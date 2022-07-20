@@ -11,7 +11,7 @@ class Device(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name = Column(String, nullable=False, unique=True)
     description = Column(String, nullable=False)
-    token = Column(String, nullable=False)
+    secret = Column(String, nullable=False)
     created_at = Column(DateTime, default='now()', nullable=False)
     updated_at = Column(DateTime, default='now()', nullable=False)
 
@@ -22,7 +22,7 @@ class Device(Base):
             id={self.id},
             name={self.name},
             description={self.description},
-            token={self.token},
+            secret={self.secret},
             created_at={self.created_at},
             updated_at={self.updated_at}
         )'''

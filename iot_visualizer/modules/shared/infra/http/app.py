@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
+from .middlewares.exception_middleware import excepetion_middleware
+from ..sqlalchemy.db_engine import db_engine
+from ..sqlalchemy.models.Base import Base
 from ....user.infra.http.routes.user_routes import user_router
 from ....device.infra.http.routes.device_routes import device_router
 
-from ..sqlalchemy.db_engine import db_engine
-from ..sqlalchemy.models.Base import Base
-from .middlewares.exception_middleware import excepetion_middleware
 
 class App:
     def __init__(self):

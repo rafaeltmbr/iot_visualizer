@@ -31,12 +31,12 @@ class AttributeRepository(IAttributeRepository):
         return self.session.scalar(select(Attribute).where(Attribute.name == name))
 
 
-    def create(self, data: CreateAttributeDTO) -> Attribute:
+    def create(self, dto: CreateAttributeDTO) -> Attribute:
         attribute = Attribute(
-            device_id = data.device_id,
-            name = data.name,
-            type = data.type,
-            formatting = data.formatting,
+            device_id = dto.device_id,
+            name = dto.name,
+            type = dto.type,
+            formatting = dto.formatting,
         )
 
         self.session.add(attribute)

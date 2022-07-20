@@ -6,4 +6,4 @@ class CreateDeviceDTO(NamedTuple):
     # project_id: UUID
     name: str
     description: str
-    token: str
+    secret: str

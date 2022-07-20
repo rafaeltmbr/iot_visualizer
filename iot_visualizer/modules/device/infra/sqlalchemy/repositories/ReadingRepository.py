@@ -19,10 +19,10 @@ class ReadingRepository(IReadingRepository):
     def find_by_id(self, id: UUID) -> Union[Reading, None]:
         return self.session.scalar(select(Reading).where(Reading.id == id))
 
-    def create(self, data: CreateReadingDTO) -> Reading:
+    def create(self, dto: CreateReadingDTO) -> Reading:
         reading = Reading(
-            attribute_id = data.attribute_id,
-            value = data.value,
+            attribute_id = dto.attribute_id,
+            value = dto.value,
         )
 
         self.session.add(reading)

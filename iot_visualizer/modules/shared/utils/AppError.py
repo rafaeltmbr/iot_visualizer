@@ -19,6 +19,8 @@ class ErrorType(Enum):
     DUPLICATED_PROJECT_NAME = 7
     DUPLICATED_DEVICE_NAME = 8
     DUPLICATED_ATTRIBUTE_NAME = 9
+    MISSING_DEVICE_TOKEN = 10
+    INVALID_DEVICE_TOKEN = 11
 
 
 app_errors: dict[ErrorType, ErrorData] = {
@@ -57,6 +59,14 @@ app_errors: dict[ErrorType, ErrorData] = {
     ErrorType.DUPLICATED_ATTRIBUTE_NAME: ErrorData(
         status.HTTP_403_FORBIDDEN,
         'Duplicated attribute name'
+    ),
+    ErrorType.MISSING_DEVICE_TOKEN: ErrorData(
+        status.HTTP_400_BAD_REQUEST,
+        'Missing device authorization token'
+    ),
+    ErrorType.INVALID_DEVICE_TOKEN: ErrorData(
+        status.HTTP_401_UNAUTHORIZED,
+        'Invalid device token'
     ),
 }
 

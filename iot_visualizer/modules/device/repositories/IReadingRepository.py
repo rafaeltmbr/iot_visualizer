@@ -14,7 +14,7 @@ class IReadingRepository(ABC):
     def find_by_id(self, id: UUID) -> Union[Reading, None]: raise NotImplementedError
 
     @abstractmethod
-    def create(self, data: CreateReadingDTO) -> Reading: raise NotImplementedError
+    def create(self, dto: CreateReadingDTO) -> Reading: raise NotImplementedError
 
     @abstractmethod
     def update(self, reading: Reading) -> Reading: raise NotImplementedError

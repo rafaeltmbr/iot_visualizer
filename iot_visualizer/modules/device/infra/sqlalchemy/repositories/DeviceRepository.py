@@ -30,11 +30,11 @@ class DeviceRepository(IDeviceRepository):
         return self.session.scalar(select(Device).where(Device.name == name))
 
 
-    def create(self, data: CreateDeviceDTO) -> Device:
+    def create(self, dto: CreateDeviceDTO) -> Device:
         device = Device(
-            name=data.name,
-            description=data.description,
-            token=data.token,
+            name=dto.name,
+            description=dto.description,
+            secret=dto.secret,
         )
 
         self.session.add(device)

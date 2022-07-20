@@ -9,6 +9,7 @@ from ....services.device.CreateDeviceService import CreateDeviceService
 from ....services.device.UpdateDeviceService import UpdateDeviceService
 from ....services.device.DeleteDeviceService import DeleteDeviceService
 from .....device.dto.device.UpdateDeviceDTO import UpdateDeviceDTO
+from .....device.dto.device.CreateDeviceDTO import CreateDeviceDTO
 from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 
 
@@ -30,8 +31,11 @@ class DeviceController:
 
     async def create(req: Request, res: Response, data: CreateDeviceSchema):
         createDeviceService = CreateDeviceService(DeviceRepository())
-        device = await createDeviceService.execute(data)
-
+        device = await createDeviceService.execute(CreateDeviceDTO(
+            name = data.name,
+            description = data.description,
+            secret = ''
+        ))
         return device
 
 
@@ -41,7 +45,6 @@ class DeviceController:
         device = await updateDeviceService.execute(id, UpdateDeviceDTO(
             name=data.name,
             description=data.description,
-            token=data.token
         ))
 
         return device
