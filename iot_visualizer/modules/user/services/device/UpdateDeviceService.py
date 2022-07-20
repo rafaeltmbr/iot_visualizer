@@ -14,6 +14,9 @@ class UpdateDeviceService:
         if not device:
             raise AppError(ErrorType.DEVICE_NOT_FOUND)
 
+        if data.name and data.name != device.name and self.device_repository.find_by_name(data.name):
+            raise AppError(ErrorType.DUPLICATED_DEVICE_NAME)
+
         update_instance_attributes(device, data, True)
 
         return self.device_repository.update(device)
