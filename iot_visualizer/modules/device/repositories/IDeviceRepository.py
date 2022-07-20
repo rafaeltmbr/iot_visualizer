@@ -13,7 +13,7 @@ class IDeviceRepository(ABC):
     def find_by_id(self, id: UUID) -> Device: raise NotImplementedError
 
     @abstractmethod
-    def find_by_name(self, id: str) -> Device: raise NotImplementedError
+    def find_by_name(self, name: str) -> Device: raise NotImplementedError
 
     @abstractmethod
     def create(self, dto: CreateDeviceDTO) -> Device: raise NotImplementedError

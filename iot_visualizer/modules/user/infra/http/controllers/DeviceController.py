@@ -1,5 +1,7 @@
-from fastapi import Request, Response
+from uuid import UUID
+from fastapi import Request, Response, status
 
+from ....services.device.DeleteDeviceService import DeleteDeviceService
 from ..schemas.device.UpdateDeviceSchema import UpdateDeviceSchema
 from ..schemas.device.CreateDeviceSchema import CreateDeviceSchema
 from ....services.device.UpdateDeviceService import UpdateDeviceService
@@ -33,7 +35,7 @@ class DeviceController:
         return device
 
 
-    async def update(req: Request, res: Response, id: str, data: UpdateDeviceSchema):
+    async def update(req: Request, res: Response, id: UUID, data: UpdateDeviceSchema):
         updateDeviceService = UpdateDeviceService(DeviceRepository())
 
         device = await updateDeviceService.execute(id, UpdateDeviceDTO(
@@ -43,4 +45,10 @@ class DeviceController:
         ))
 
         return device
+
+    async def delete(req: Request, res: Response, id: UUID):
+        removeDeviceService = DeleteDeviceService(DeviceRepository())
+        await removeDeviceService.execute(id)
+
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 

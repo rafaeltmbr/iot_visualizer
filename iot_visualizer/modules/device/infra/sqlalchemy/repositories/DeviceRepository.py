@@ -36,7 +36,7 @@ class DeviceRepository(IDeviceRepository):
 
     def update(self, device: Device) -> Device:
         self.session.commit()
-        return self.session.scalars(select(Device).where(Device.id == device.id))
+        return self.session.scalar(select(Device).where(Device.id == device.id))
 
     def delete(self, device: Device) -> None:
         self.session.delete(device)
