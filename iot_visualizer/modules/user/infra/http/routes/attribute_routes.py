@@ -1,8 +1,8 @@
 from uuid import UUID
 from fastapi import APIRouter, Request, Response
 
-from ..schemas.UpdateAttributeSchema import UpdateAttributeSchema
-from ..schemas.CreateAttributeSchema import CreateAttributeSchema
+from ..schemas.attribute.UpdateAttributeSchema import UpdateAttributeSchema
+from ..schemas.attribute.CreateAttributeSchema import CreateAttributeSchema
 from ..controllers.AttributeController import AttributeController
 
 attribute_router = APIRouter(prefix='/attribute')

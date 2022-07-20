@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Date, DateTime, String
+from uuid import uuid4
+from sqlalchemy import Column, DateTime, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -7,8 +8,8 @@ from .....shared.infra.sqlalchemy.models.Base import Base
 class Device(Base):
     __tablename__ = 'device'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default='uuid_generate_v4()')
-    name = Column(String, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    name = Column(String, nullable=False, unique=True)
     description = Column(String, nullable=False)
     token = Column(String, nullable=False)
     created_at = Column(DateTime, default='now()', nullable=False)

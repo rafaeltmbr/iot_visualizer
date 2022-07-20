@@ -4,7 +4,7 @@ from iot_visualizer.modules.user.services.attribute.CreateAttributeService impor
 from iot_visualizer.modules.user.services.attribute.RemoveAttributeService import RemoveAttributeService
 from iot_visualizer.modules.user.services.attribute.UpdateAttributeService import UpdateAttributeService
 
-from ..schemas.CreateAttributeSchema import CreateAttributeSchema
+from ..schemas.attribute.CreateAttributeSchema import CreateAttributeSchema
 
 
 class AttributeController:

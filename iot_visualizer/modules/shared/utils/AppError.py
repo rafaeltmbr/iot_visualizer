@@ -10,11 +10,15 @@ class ErrorData:
 
 class ErrorType(Enum):
     UNEXPECTED = 0
-    USER_NOT_FOUND = 1
-    PROJECT_NOT_FOUND = 2
-    DEVICE_NOT_FOUND = 3
-    ATTRIBUTE_NOT_FOUND = 4
-    READING_NOT_FOUND = 5
+    OPERATION_NOT_PERMITTED = 1
+    USER_NOT_FOUND = 2
+    PROJECT_NOT_FOUND = 3
+    DEVICE_NOT_FOUND = 4
+    ATTRIBUTE_NOT_FOUND = 5
+    READING_NOT_FOUND = 6
+    DUPLICATED_PROJECT_NAME = 7
+    DUPLICATED_DEVICE_NAME = 8
+    DUPLICATED_ATTRIBUTE_NAME = 9
 
 
 app_errors: dict[ErrorType, ErrorData] = {
@@ -41,6 +45,18 @@ app_errors: dict[ErrorType, ErrorData] = {
     ErrorType.READING_NOT_FOUND: ErrorData(
         status.HTTP_404_NOT_FOUND,
         'Reading not found'
+    ),
+    ErrorType.DUPLICATED_PROJECT_NAME: ErrorData(
+        status.HTTP_403_FORBIDDEN,
+        'Duplicated project name'
+    ),
+    ErrorType.DUPLICATED_DEVICE_NAME: ErrorData(
+        status.HTTP_403_FORBIDDEN,
+        'Duplicated device name'
+    ),
+    ErrorType.DUPLICATED_ATTRIBUTE_NAME: ErrorData(
+        status.HTTP_403_FORBIDDEN,
+        'Duplicated attribute name'
     ),
 }
 
