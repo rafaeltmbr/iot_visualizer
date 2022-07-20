@@ -1,8 +1,10 @@
 from uuid import UUID
+
 from ....device.repositories.IDeviceRepository import IDeviceRepository
-from ....device.dto.UpdateDeviceDTO import UpdateDeviceDTO
+from ....device.dto.device.UpdateDeviceDTO import UpdateDeviceDTO
 from ....shared.utils.AppError import AppError, ErrorType
 from ....shared.utils.update_instance_attributes import update_instance_attributes
+
 
 class UpdateDeviceService:
     def __init__(self, device_repository: IDeviceRepository):

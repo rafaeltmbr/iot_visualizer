@@ -1,10 +1,11 @@
+from typing import Union
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from uuid import UUID
 
 from ..models.Attribute import Attribute
 from ....repositories.IAttributeRepository import IAttributeRepository
-from ....dto.CreateAttributeDTO import CreateAttributeDTO
+from ....dto.attribute.CreateAttributeDTO import CreateAttributeDTO
 from .....shared.infra.sqlalchemy.db_engine import db_engine
 
 
@@ -17,11 +18,16 @@ class AttributeRepository(IAttributeRepository):
         return self.session.query(Attribute).all()
 
 
-    def find_by_id(self, id: UUID) -> Attribute:
+    def find_by_id(self, id: UUID) -> Union[Attribute, None]:
         return self.session.scalar(select(Attribute).where(Attribute.id == id))
 
 
-    def find_by_name(self, name: str) -> Attribute:
+    def find_by_id_with_relations(self, id: UUID) -> Union[Attribute, None]:
+        query = select(Attribute).options(joinedload('readings')).where(Attribute.id == id)
+        return self.session.scalar(query)
+
+
+    def find_by_name(self, name: str) -> Union[Attribute, None]:
         return self.session.scalar(select(Attribute).where(Attribute.name == name))
 
 

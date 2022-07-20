@@ -10,7 +10,7 @@ class ShowAttributeService:
 
 
     async def execute(self, id: UUID):
-        attribute = self.attribute_repository.find_by_id(id)
+        attribute = self.attribute_repository.find_by_id_with_relations(id)
 
         if not attribute:
             raise AppError(ErrorType.ATTRIBUTE_NOT_FOUND)

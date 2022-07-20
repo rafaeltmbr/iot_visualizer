@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from ....device.dto.UpdateAttributeDTO import UpdateAttributeDTO
+from ....device.dto.attribute.UpdateAttributeDTO import UpdateAttributeDTO
 from ....device.repositories.IAttributeRepository import IAttributeRepository
 from ....shared.utils.AppError import AppError, ErrorType
 from ....shared.utils.update_instance_attributes import update_instance_attributes

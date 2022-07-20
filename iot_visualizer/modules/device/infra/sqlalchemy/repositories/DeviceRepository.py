@@ -1,12 +1,12 @@
+from typing import Union
 from uuid import UUID
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from ....dto.CreateDeviceDTO import CreateDeviceDTO
+from ..models.Device import Device
+from ....dto.device.CreateDeviceDTO import CreateDeviceDTO
 from ....repositories.IDeviceRepository import IDeviceRepository
 from .....shared.infra.sqlalchemy.db_engine import db_engine
-from ..models.Device import Device
-from ..models.Reading import Reading
 
 
 class DeviceRepository(IDeviceRepository):
@@ -18,11 +18,15 @@ class DeviceRepository(IDeviceRepository):
         return self.session.query(Device).all()
 
 
-    def find_by_id(self, id: UUID) -> Device:
+    def find_by_id(self, id: UUID) -> Union[Device, None]:
         return self.session.scalar(select(Device).where(Device.id == id))
 
+    def find_by_id_with_relations(self, id: UUID) -> Union[Device, None]:
+        query = select(Device).options(joinedload('attributes').joinedload('readings')).where(Device.id == id)
+        return self.session.scalar(query)
 
-    def find_by_name(self, name: str) -> Device:
+
+    def find_by_name(self, name: str) -> Union[Device, None]:
         return self.session.scalar(select(Device).where(Device.name == name))
 
 

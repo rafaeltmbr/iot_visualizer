@@ -1,6 +1,6 @@
 from ....device.repositories.IAttributeRepository import IAttributeRepository
 from ....device.repositories.IDeviceRepository import IDeviceRepository
-from ....device.dto.CreateAttributeDTO import CreateAttributeDTO
+from ....device.dto.attribute.CreateAttributeDTO import CreateAttributeDTO
 from ....shared.utils.AppError import AppError, ErrorType
 
 

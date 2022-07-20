@@ -1,4 +1,4 @@
-from ....device.dto.CreateDeviceDTO import CreateDeviceDTO
+from ....device.dto.device.CreateDeviceDTO import CreateDeviceDTO
 from ....device.repositories.IDeviceRepository import IDeviceRepository
 from ....device.infra.sqlalchemy.models.Device import Device
 from ....shared.utils.AppError import AppError, ErrorType

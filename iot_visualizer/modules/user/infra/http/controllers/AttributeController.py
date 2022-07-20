@@ -9,8 +9,8 @@ from ....services.attribute.ShowAttributeService import ShowAttributeService
 from ....services.attribute.CreateAttributeService import CreateAttributeService
 from ....services.attribute.DeleteAttributeService import DeleteAttributeService
 from ....services.attribute.UpdateAttributeService import UpdateAttributeService
-from .....device.dto.CreateAttributeDTO import CreateAttributeDTO
-from .....device.dto.UpdateAttributeDTO import UpdateAttributeDTO
+from .....device.dto.attribute.CreateAttributeDTO import CreateAttributeDTO
+from .....device.dto.attribute.UpdateAttributeDTO import UpdateAttributeDTO
 from .....device.infra.sqlalchemy.repositories.AttributeRepository import AttributeRepository
 from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 

@@ -8,7 +8,7 @@ from ....services.device.ShowDeviceService import ShowDeviceService
 from ....services.device.CreateDeviceService import CreateDeviceService
 from ....services.device.UpdateDeviceService import UpdateDeviceService
 from ....services.device.DeleteDeviceService import DeleteDeviceService
-from .....device.dto.UpdateDeviceDTO import UpdateDeviceDTO
+from .....device.dto.device.UpdateDeviceDTO import UpdateDeviceDTO
 from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 
 
