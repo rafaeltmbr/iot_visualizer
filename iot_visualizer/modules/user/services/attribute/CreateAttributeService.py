@@ -1,5 +1,20 @@
-from ...infra.http.schemas.attribute.CreateAttributeSchema import CreateAttributeSchema
+from ....device.repositories.IAttributeRepository import IAttributeRepository
+from ....device.repositories.IDeviceRepository import IDeviceRepository
+from ....device.dto.CreateAttributeDTO import CreateAttributeDTO
+from ....shared.utils.AppError import AppError, ErrorType
+
 
 class CreateAttributeService:
-    async def execute(self, body: CreateAttributeSchema):
-        return body
+    def __init__(self, attribute_repository: IAttributeRepository, device_repository: IDeviceRepository):
+        self.attribute_repository = attribute_repository
+        self.device_repository = device_repository
+
+
+    async def execute(self, data: CreateAttributeDTO):
+        if not self.device_repository.find_by_id(data.device_id):
+            raise AppError(ErrorType.DEVICE_NOT_FOUND)
+
+        if self.attribute_repository.find_by_name(data.name):
+            raise AppError(ErrorType.DUPLICATED_ATTRIBUTE_NAME)
+
+        return self.attribute_repository.create(data)

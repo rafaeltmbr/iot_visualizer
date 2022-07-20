@@ -8,6 +8,16 @@ from ..controllers.AttributeController import AttributeController
 attribute_router = APIRouter(prefix='/attribute')
 
 
+@attribute_router.get('')
+async def list_attribute(req: Request, res: Response):
+    return await AttributeController.list(req, res)
+
+
+@attribute_router.get('/{id}')
+async def show_attribute(req: Request, res: Response, id: UUID):
+    return await AttributeController.show(req, res, id)
+
+
 @attribute_router.post('')
 async def create_attribute(req: Request, res: Response, body: CreateAttributeSchema):
     return await AttributeController.create(req, res, body)
@@ -19,5 +29,5 @@ async def update_attribute(req: Request, res: Response, id: UUID, body: UpdateAt
 
 
 @attribute_router.delete('/{id}', response_class=Response)
-async def remove_attribute(req: Request, res: Response, id: UUID):
-    return await AttributeController.remove(req, res, id)
+async def delete_attribute(req: Request, res: Response, id: UUID):
+    return await AttributeController.delete(req, res, id)

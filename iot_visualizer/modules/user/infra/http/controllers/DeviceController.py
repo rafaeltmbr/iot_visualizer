@@ -1,15 +1,15 @@
 from uuid import UUID
 from fastapi import Request, Response, status
 
-from ....services.device.DeleteDeviceService import DeleteDeviceService
-from ..schemas.device.UpdateDeviceSchema import UpdateDeviceSchema
 from ..schemas.device.CreateDeviceSchema import CreateDeviceSchema
-from ....services.device.UpdateDeviceService import UpdateDeviceService
+from ..schemas.device.UpdateDeviceSchema import UpdateDeviceSchema
 from ....services.device.ListDevicesService import ListDevicesService
-from ....services.device.CreateDeviceService import CreateDeviceService
 from ....services.device.ShowDeviceService import ShowDeviceService
-from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
+from ....services.device.CreateDeviceService import CreateDeviceService
+from ....services.device.UpdateDeviceService import UpdateDeviceService
+from ....services.device.DeleteDeviceService import DeleteDeviceService
 from .....device.dto.UpdateDeviceDTO import UpdateDeviceDTO
+from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 
 
 

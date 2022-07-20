@@ -9,9 +9,7 @@ class CreateDeviceService:
         self.device_repository = device_repository
 
     async def execute(self, data: CreateDeviceDTO) -> Device:
-        device = self.device_repository.find_by_name(data.name)
-
-        if device:
+        if self.device_repository.find_by_name(data.name):
             raise AppError(ErrorType.DUPLICATED_DEVICE_NAME)
 
         return self.device_repository.create(data)

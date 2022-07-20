@@ -1,7 +1,6 @@
-from uuid import UUID
+from typing import Optional
 from pydantic import BaseModel
 
 class UpdateAttributeSchema(BaseModel):
-    device_id: UUID
-    name: str
-    formatting: str
+    name: Optional[str] = None
+    formatting: Optional[str] = None

@@ -9,7 +9,10 @@ class IAttributeRepository(ABC):
     def list(self) -> list[Attribute]: raise NotImplementedError
 
     @abstractmethod
-    def show(self, id: UUID) -> Attribute: raise NotImplementedError
+    def find_by_id(self, id: UUID) -> Attribute: raise NotImplementedError
+
+    @abstractmethod
+    def find_by_name(self, name: str) -> Attribute: raise NotImplementedError
 
     @abstractmethod
     def create(self, dto: CreateAttributeDTO) -> Attribute: raise NotImplementedError
@@ -18,4 +21,4 @@ class IAttributeRepository(ABC):
     def update(self, attribute: Attribute) -> Attribute: raise NotImplementedError
 
     @abstractmethod
-    def delete(self, attribute: Attribute) -> Attribute: raise NotImplementedError
+    def delete(self, attribute: Attribute) -> None: raise NotImplementedError
