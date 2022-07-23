@@ -1,10 +1,11 @@
 from uuid import uuid4
 from sqlalchemy import Column, DateTime, Enum, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSON
 
 from .....shared.infra.sqlalchemy.models.Base import Base
 from ....type.attribute_type import AttributeType
+
 
 class Attribute(Base):
     __tablename__ = 'attribute'
@@ -13,7 +14,7 @@ class Attribute(Base):
     device_id = Column(UUID(as_uuid=True), ForeignKey('device.id'), nullable=False)
     name = Column(String, nullable=False)
     type = Column(Enum(AttributeType), nullable=False)
-    formatting = Column(String, nullable=False)
+    config = Column(JSON, nullable=False)
     created_at = Column(DateTime, default='now()', nullable=False)
     updated_at = Column(DateTime, default='now()', nullable=False)
 

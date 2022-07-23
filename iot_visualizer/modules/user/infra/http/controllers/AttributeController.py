@@ -36,7 +36,7 @@ class AttributeController:
             device_id = body.device_id,
             name = body.name,
             type = body.type,
-            formatting = body.formatting
+            config = body.config
         ))
 
         return attribute
@@ -46,7 +46,7 @@ class AttributeController:
         updateAttribute = UpdateAttributeService(AttributeRepository())
         attribute = await updateAttribute.execute(id, UpdateAttributeDTO(
             name=body.name,
-            formatting=body.formatting
+            config=body.config
         ))
 
         return attribute

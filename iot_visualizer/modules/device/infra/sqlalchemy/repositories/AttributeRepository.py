@@ -3,10 +3,12 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 from uuid import UUID
 
+
 from ..models.Attribute import Attribute
 from ....repositories.IAttributeRepository import IAttributeRepository
 from ....dto.attribute.CreateAttributeDTO import CreateAttributeDTO
 from .....shared.infra.sqlalchemy.db_engine import db_engine
+from .....user.infra.http.schemas.attribute.AttributeConfigSchema import AttributeConfigSchema
 
 
 class AttributeRepository(IAttributeRepository):
@@ -36,7 +38,7 @@ class AttributeRepository(IAttributeRepository):
             device_id = dto.device_id,
             name = dto.name,
             type = dto.type,
-            formatting = dto.formatting,
+            config = dto.config.toDict(),
         )
 
         self.session.add(attribute)
@@ -46,6 +48,9 @@ class AttributeRepository(IAttributeRepository):
 
 
     def update(self, attribute: Attribute) -> Attribute:
+        if isinstance(attribute.config, AttributeConfigSchema):
+            attribute.config = attribute.config.toDict()
+
         self.session.commit()
         return self.session.scalar(select(Attribute).where(Attribute.id == attribute.id))
 

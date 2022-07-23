@@ -16,5 +16,5 @@ class CreateAttributeService:
 
         if self.attribute_repository.find_by_name(data.name):
             raise AppError(ErrorType.DUPLICATED_ATTRIBUTE_NAME)
-
+        
         return self.attribute_repository.create(data)
