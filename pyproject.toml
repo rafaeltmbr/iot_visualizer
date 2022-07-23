@@ -12,6 +12,7 @@ pydantic = "^1.9.1"
 SQLAlchemy = "^1.4.39"
 psycopg2 = "^2.9.3"
 python-dotenv = "^0.20.0"
+SQLAlchemy-serializer = "^1.4.1"
 
 [tool.poetry.dev-dependencies]
 

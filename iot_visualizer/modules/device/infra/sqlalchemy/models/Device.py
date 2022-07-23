@@ -2,10 +2,11 @@ from uuid import uuid4
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy_serializer import SerializerMixin
 
 from .....shared.infra.sqlalchemy.models.Base import Base
 
-class Device(Base):
+class Device(Base, SerializerMixin):
     __tablename__ = 'device'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)

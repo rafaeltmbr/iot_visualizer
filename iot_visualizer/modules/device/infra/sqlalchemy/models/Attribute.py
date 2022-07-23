@@ -2,12 +2,13 @@ from uuid import uuid4
 from sqlalchemy import Column, DateTime, Enum, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID, JSON
+from sqlalchemy_serializer import SerializerMixin
 
 from .....shared.infra.sqlalchemy.models.Base import Base
 from ....type.attribute_type import AttributeType
 
 
-class Attribute(Base):
+class Attribute(Base, SerializerMixin):
     __tablename__ = 'attribute'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
@@ -20,6 +21,8 @@ class Attribute(Base):
 
     device = relationship('Device', back_populates='attributes')
     readings = relationship('Reading', back_populates='attribute', cascade='all, delete-orphan')
+
+    serialize_rules = ('-device',)
 
     UniqueConstraint('device_id', 'name', name='UQ_device_name')
 
