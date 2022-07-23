@@ -16,5 +16,8 @@ class CreateAttributeService:
 
         if self.attribute_repository.find_by_name(data.name):
             raise AppError(ErrorType.DUPLICATED_ATTRIBUTE_NAME)
+
+        if not getattr(data.config.formatting, data.type):
+            raise ValueError(f'field "{data.type}" is required in the config.formatting object')
         
         return self.attribute_repository.create(data)

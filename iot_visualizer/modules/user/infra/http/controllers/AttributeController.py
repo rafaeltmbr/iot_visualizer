@@ -16,6 +16,7 @@ from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRep
 
 
 class AttributeController:
+    @staticmethod
     async def list(req: Request, res: Response):
         listAttributeService = ListAttributeService(AttributeRepository())
         attributes = await listAttributeService.execute()
@@ -23,6 +24,7 @@ class AttributeController:
         return { "results": attributes }
 
 
+    @staticmethod
     async def show(req: Request, res: Response, id: UUID):
         showAttributeService = ShowAttributeService(AttributeRepository())
         attribute = await showAttributeService.execute(id)
@@ -30,6 +32,7 @@ class AttributeController:
         return attribute
 
 
+    @staticmethod
     async def create(req: Request, res: Response, body: CreateAttributeSchema):
         createAttribute = CreateAttributeService(AttributeRepository(), DeviceRepository())
         attribute = await createAttribute.execute(CreateAttributeDTO(
@@ -42,6 +45,7 @@ class AttributeController:
         return attribute
 
 
+    @staticmethod
     async def update(req: Request, res: Response, id: UUID, body: UpdateAttributeSchema):
         updateAttribute = UpdateAttributeService(AttributeRepository())
         attribute = await updateAttribute.execute(id, UpdateAttributeDTO(
@@ -52,6 +56,7 @@ class AttributeController:
         return attribute
 
 
+    @staticmethod
     async def delete(req: Request, res: Response, id: UUID):
         deleteAttribute = DeleteAttributeService(AttributeRepository())
         await deleteAttribute.execute(id)

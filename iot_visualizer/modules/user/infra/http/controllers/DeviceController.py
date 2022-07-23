@@ -15,6 +15,7 @@ from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRep
 
 
 class DeviceController:
+    @staticmethod
     async def list(req: Request, res: Response):
         listDevicesService = ListDevicesService(DeviceRepository())
         devices = await listDevicesService.execute()
@@ -22,6 +23,7 @@ class DeviceController:
         return { "results": devices }
 
 
+    @staticmethod
     async def show(req: Request, res: Response, id: str):
         showDeviceService = ShowDeviceService(DeviceRepository())
         device = await showDeviceService.execute(id)
@@ -29,6 +31,7 @@ class DeviceController:
         return device
 
 
+    @staticmethod
     async def create(req: Request, res: Response, data: CreateDeviceSchema):
         createDeviceService = CreateDeviceService(DeviceRepository())
         device = await createDeviceService.execute(CreateDeviceDTO(
@@ -39,6 +42,7 @@ class DeviceController:
         return device
 
 
+    @staticmethod
     async def update(req: Request, res: Response, id: UUID, data: UpdateDeviceSchema):
         updateDeviceService = UpdateDeviceService(DeviceRepository())
 
@@ -49,6 +53,8 @@ class DeviceController:
 
         return device
 
+
+    @staticmethod
     async def delete(req: Request, res: Response, id: UUID):
         removeDeviceService = DeleteDeviceService(DeviceRepository())
         await removeDeviceService.execute(id)

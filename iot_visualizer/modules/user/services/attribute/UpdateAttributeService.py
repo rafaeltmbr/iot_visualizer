@@ -22,5 +22,8 @@ class UpdateAttributeService:
 
         update_instance_attributes(attribute, data, True)
 
+        if not getattr(attribute.config.formatting, attribute.type.value):
+            raise ValueError(f'field "{attribute.type.value}" is required in the config.formatting object')
+
         return self.attribute_repository.update(attribute)
         

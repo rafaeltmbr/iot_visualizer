@@ -1,11 +1,12 @@
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, root_validator
 
 
 class AttributeFormattingNumber(BaseModel):
     preffix: str
     suffix: str
+    decimals: int
 
 
 class AttributeFormattingBoolean(BaseModel):
@@ -27,6 +28,15 @@ class AttributeFormatting(BaseModel):
     number: Optional[AttributeFormattingNumber]
     boolean: Optional[AttributeFormattingBoolean]
     text: Optional[AttributeFormattingText]
+
+    @root_validator
+    def only_one_field(cls, value):
+        values = [value for value in value.values() if value]
+
+        if len(values) != 1:
+            raise ValueError('attribute formatting must have only one of the fields "number", "boolean" or "text" defined')
+
+        return value
 
 
 class AttributeLayout(Enum):

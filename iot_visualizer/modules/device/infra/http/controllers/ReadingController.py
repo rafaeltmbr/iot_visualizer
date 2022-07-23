@@ -8,10 +8,10 @@ from ....dto.reading.CreateReadingDTO import CreateReadingDTO
 
 
 class ReadingController:
+    @staticmethod
     async def create(req: Request, res: Response, body: CreateReadingSchema):
-        print('ENTERED')
         createReading = CreateReadingService(ReadingRepository(), AttributeRepository())
-        print('ENTERED 2')
+
         reading = await createReading.execute( CreateReadingDTO(
             attribute_id = body.attribute_id,
             value = body.value,
