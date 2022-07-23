@@ -8,72 +8,74 @@ class ErrorData:
         self.message = message
 
 
-class ErrorType(Enum):
-    UNEXPECTED = 0
-    OPERATION_NOT_PERMITTED = 1
-    USER_NOT_FOUND = 2
-    PROJECT_NOT_FOUND = 3
-    DEVICE_NOT_FOUND = 4
-    ATTRIBUTE_NOT_FOUND = 5
-    READING_NOT_FOUND = 6
-    DUPLICATED_PROJECT_NAME = 7
-    DUPLICATED_DEVICE_NAME = 8
-    DUPLICATED_ATTRIBUTE_NAME = 9
-    MISSING_DEVICE_TOKEN = 10
-    INVALID_DEVICE_TOKEN = 11
-
-
-app_errors: dict[ErrorType, ErrorData] = {
-    ErrorType.UNEXPECTED: ErrorData(
+class AppErrors(Enum):
+    UNEXPECTED = ErrorData(
         status.HTTP_400_BAD_REQUEST,
         'Unexpected error'
-    ),
-    ErrorType.USER_NOT_FOUND: ErrorData(
+    )
+
+    OPERATION_NOT_PERMITTED = ErrorData(
+        status.HTTP_403_FORBIDDEN,
+        'Operation not permitted'
+    )
+
+    USER_NOT_FOUND = ErrorData(
         status.HTTP_404_NOT_FOUND,
         'User not found'
-    ),
-    ErrorType.PROJECT_NOT_FOUND: ErrorData(
+    )
+
+    PROJECT_NOT_FOUND = ErrorData(
         status.HTTP_404_NOT_FOUND,
         'Project not found'
-    ),
-    ErrorType.DEVICE_NOT_FOUND: ErrorData(
+    )
+
+    DEVICE_NOT_FOUND = ErrorData(
         status.HTTP_404_NOT_FOUND,
         'Device not found'
-    ),
-    ErrorType.ATTRIBUTE_NOT_FOUND: ErrorData(
+    )
+
+    ATTRIBUTE_NOT_FOUND = ErrorData(
         status.HTTP_404_NOT_FOUND,
         'Attribute not found'
-    ),
-    ErrorType.READING_NOT_FOUND: ErrorData(
+    )
+
+    READING_NOT_FOUND = ErrorData(
         status.HTTP_404_NOT_FOUND,
         'Reading not found'
-    ),
-    ErrorType.DUPLICATED_PROJECT_NAME: ErrorData(
+    )
+
+    DUPLICATED_PROJECT_NAME = ErrorData(
         status.HTTP_403_FORBIDDEN,
         'Duplicated project name'
-    ),
-    ErrorType.DUPLICATED_DEVICE_NAME: ErrorData(
+    )
+
+    DUPLICATED_DEVICE_NAME = ErrorData(
         status.HTTP_403_FORBIDDEN,
         'Duplicated device name'
-    ),
-    ErrorType.DUPLICATED_ATTRIBUTE_NAME: ErrorData(
+    )
+
+    DUPLICATED_ATTRIBUTE_NAME = ErrorData(
         status.HTTP_403_FORBIDDEN,
         'Duplicated attribute name'
-    ),
-    ErrorType.MISSING_DEVICE_TOKEN: ErrorData(
-        status.HTTP_400_BAD_REQUEST,
+    )
+
+    MISSING_DEVICE_TOKEN = ErrorData(
+        status.HTTP_401_UNAUTHORIZED,
         'Missing device authorization token'
-    ),
-    ErrorType.INVALID_DEVICE_TOKEN: ErrorData(
+    )
+
+    INVALID_DEVICE_TOKEN = ErrorData(
         status.HTTP_401_UNAUTHORIZED,
         'Invalid device token'
-    ),
-}
+    )
+
+    INVALID_READING_VALUE = ErrorData(
+        status.HTTP_400_BAD_REQUEST,
+        'Invalid reading value'
+    )
 
 
 class AppError(Exception):
-    def __init__(self, type: ErrorType):
+    def __init__(self, error: AppErrors):
         super()
-        self.type = type
-        self.status = app_errors[type].status
-        self.message = app_errors[type].message
+        self.error = error

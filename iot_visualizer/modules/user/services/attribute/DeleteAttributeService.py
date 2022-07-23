@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from ....device.repositories.IAttributeRepository import IAttributeRepository
-from ....shared.utils.AppError import AppError, ErrorType
+from ....shared.utils.AppError import AppError, AppErrors
 
 
 class DeleteAttributeService:
@@ -13,6 +13,6 @@ class DeleteAttributeService:
         attribute = self.attribute_repository.find_by_id(id)
 
         if not attribute:
-            raise AppError(ErrorType.ATTRIBUTE_NOT_FOUND)
+            raise AppError(AppErrors.ATTRIBUTE_NOT_FOUND)
 
         self.attribute_repository.delete(attribute)

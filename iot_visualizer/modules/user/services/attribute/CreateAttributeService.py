@@ -1,7 +1,7 @@
 from ....device.repositories.IAttributeRepository import IAttributeRepository
 from ....device.repositories.IDeviceRepository import IDeviceRepository
 from ....device.dto.attribute.CreateAttributeDTO import CreateAttributeDTO
-from ....shared.utils.AppError import AppError, ErrorType
+from ....shared.utils.AppError import AppError, AppErrors
 
 
 class CreateAttributeService:
@@ -12,10 +12,10 @@ class CreateAttributeService:
 
     async def execute(self, data: CreateAttributeDTO):
         if not self.device_repository.find_by_id(data.device_id):
-            raise AppError(ErrorType.DEVICE_NOT_FOUND)
+            raise AppError(AppErrors.DEVICE_NOT_FOUND)
 
         if self.attribute_repository.find_by_name(data.name):
-            raise AppError(ErrorType.DUPLICATED_ATTRIBUTE_NAME)
+            raise AppError(AppErrors.DUPLICATED_ATTRIBUTE_NAME)
 
         if not getattr(data.config.formatting, data.type):
             raise ValueError(f'field "{data.type}" is required in the config.formatting object')

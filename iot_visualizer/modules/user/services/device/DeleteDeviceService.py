@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from ....device.repositories.IDeviceRepository import IDeviceRepository
-from ....shared.utils.AppError import AppError, ErrorType
+from ....shared.utils.AppError import AppError, AppErrors
 
 class DeleteDeviceService():
     def __init__(self, device_repository: IDeviceRepository):
@@ -11,6 +11,6 @@ class DeleteDeviceService():
         device = self.device_repository.find_by_id(id)
 
         if not device:
-            raise AppError(ErrorType.DEVICE_NOT_FOUND)
+            raise AppError(AppErrors.DEVICE_NOT_FOUND)
 
         self.device_repository.delete(device)

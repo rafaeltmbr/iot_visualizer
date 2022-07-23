@@ -2,7 +2,7 @@ from uuid import UUID
 
 from ....device.repositories.IDeviceRepository import IDeviceRepository
 from ....device.dto.device.UpdateDeviceDTO import UpdateDeviceDTO
-from ....shared.utils.AppError import AppError, ErrorType
+from ....shared.utils.AppError import AppError, AppErrors
 from ....shared.utils.update_instance_attributes import update_instance_attributes
 
 
@@ -14,10 +14,10 @@ class UpdateDeviceService:
         device = self.device_repository.find_by_id(id)
 
         if not device:
-            raise AppError(ErrorType.DEVICE_NOT_FOUND)
+            raise AppError(AppErrors.DEVICE_NOT_FOUND)
 
         if data.name and data.name != device.name and self.device_repository.find_by_name(data.name):
-            raise AppError(ErrorType.DUPLICATED_DEVICE_NAME)
+            raise AppError(AppErrors.DUPLICATED_DEVICE_NAME)
 
         update_instance_attributes(device, data, True)
 
