@@ -1,5 +1,5 @@
 from uuid import uuid4
-from sqlalchemy import Column, DateTime, String
+from sqlalchemy import Column, DateTime, String, func
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy_serializer import SerializerMixin
@@ -14,7 +14,7 @@ class Device(Base, SerializerMixin):
     description = Column(String, nullable=False)
     secret = Column(String, nullable=False)
     created_at = Column(DateTime, default='now()', nullable=False)
-    updated_at = Column(DateTime, default='now()', nullable=False)
+    updated_at = Column(DateTime, default='now()', nullable=False, onupdate=func.current_timestamp())
 
     attributes = relationship('Attribute', back_populates='device', cascade='all, delete-orphan')
 

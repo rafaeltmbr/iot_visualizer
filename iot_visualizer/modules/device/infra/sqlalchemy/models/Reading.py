@@ -1,5 +1,5 @@
 from uuid import uuid4
-from sqlalchemy import Column, DateTime, ForeignKey, String
+from sqlalchemy import Column, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy_serializer import SerializerMixin
@@ -13,7 +13,7 @@ class Reading(Base, SerializerMixin):
     attribute_id = Column(UUID(as_uuid=True), ForeignKey('attribute.id'), nullable=False)
     value = Column(String, nullable=False)
     created_at = Column(DateTime, default='now()', nullable=False)
-    updated_at = Column(DateTime, default='now()', nullable=False)
+    updated_at = Column(DateTime, default='now()', nullable=False, onupdate=func.current_timestamp())
 
     attribute = relationship('Attribute', back_populates='readings')
 
