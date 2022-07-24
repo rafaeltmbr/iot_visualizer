@@ -10,14 +10,17 @@ from .....shared.infra.sqlalchemy.db_engine import db_engine
 
 
 class ReadingRepository(IReadingRepository):
+    session: Session = None
+
     def __init__(self):
-        self.session = Session(db_engine)
+        if not ReadingRepository.session:
+            ReadingRepository.session = Session(db_engine)
 
     def list(self) -> list[Reading]:
-        return self.session.query(Reading).all()
+        return ReadingRepository.session.query(Reading).all()
 
     def find_by_id(self, id: UUID) -> Union[Reading, None]:
-        return self.session.scalar(select(Reading).where(Reading.id == id))
+        return ReadingRepository.session.scalar(select(Reading).where(Reading.id == id))
 
     def create(self, dto: CreateReadingDTO) -> Reading:
         reading = Reading(
@@ -25,15 +28,15 @@ class ReadingRepository(IReadingRepository):
             value = dto.value,
         )
 
-        self.session.add(reading)
-        self.session.commit()
+        ReadingRepository.session.add(reading)
+        ReadingRepository.session.commit()
 
-        return self.session.scalar(select(Reading).where(Reading.id == reading.id))
+        return ReadingRepository.session.scalar(select(Reading).where(Reading.id == reading.id))
 
     def update(self, reading: Reading) -> Reading:
-        self.session.commit()
-        return self.session.scalar(select(Reading).where(Reading.id == reading.id))
+        ReadingRepository.session.commit()
+        return ReadingRepository.session.scalar(select(Reading).where(Reading.id == reading.id))
 
     def delete(self, reading: Reading) -> None:
-        self.session.delete(reading)
-        self.session.commit()
+        ReadingRepository.session.delete(reading)
+        ReadingRepository.session.commit()

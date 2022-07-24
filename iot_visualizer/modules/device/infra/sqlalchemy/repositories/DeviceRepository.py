@@ -10,24 +10,27 @@ from .....shared.infra.sqlalchemy.db_engine import db_engine
 
 
 class DeviceRepository(IDeviceRepository):
+    session: Session = None
+
     def __init__(self):
-        self.session = Session(db_engine)
+        if not DeviceRepository.session:
+            DeviceRepository.session = Session(db_engine)
 
 
     def list(self) -> list[Device]:
-        return self.session.query(Device).all()
+        return DeviceRepository.session.query(Device).all()
 
 
     def find_by_id(self, id: UUID) -> Union[Device, None]:
-        return self.session.scalar(select(Device).where(Device.id == id))
+        return DeviceRepository.session.scalar(select(Device).where(Device.id == id))
 
     def find_by_id_with_relations(self, id: UUID) -> Union[Device, None]:
         query = select(Device).options(joinedload('attributes').joinedload('readings')).where(Device.id == id)
-        return self.session.scalar(query)
+        return DeviceRepository.session.scalar(query)
 
 
     def find_by_name(self, name: str) -> Union[Device, None]:
-        return self.session.scalar(select(Device).where(Device.name == name))
+        return DeviceRepository.session.scalar(select(Device).where(Device.name == name))
 
 
     def create(self, dto: CreateDeviceDTO) -> Device:
@@ -37,17 +40,17 @@ class DeviceRepository(IDeviceRepository):
             secret=dto.secret,
         )
 
-        self.session.add(device)
-        self.session.commit()
+        DeviceRepository.session.add(device)
+        DeviceRepository.session.commit()
 
-        return self.session.scalar(select(Device).where(Device.id == device.id))
+        return DeviceRepository.session.scalar(select(Device).where(Device.id == device.id))
 
 
     def update(self, device: Device) -> Device:
-        self.session.commit()
-        return self.session.scalar(select(Device).where(Device.id == device.id))
+        DeviceRepository.session.commit()
+        return DeviceRepository.session.scalar(select(Device).where(Device.id == device.id))
 
 
     def delete(self, device: Device) -> None:
-        self.session.delete(device)
-        self.session.commit()
+        DeviceRepository.session.delete(device)
+        DeviceRepository.session.commit()
