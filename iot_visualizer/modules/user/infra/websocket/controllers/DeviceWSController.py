@@ -3,30 +3,37 @@ from uuid import UUID
 from fastapi import WebSocket
 import asyncio
 
+from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 from .....device.infra.sqlalchemy.models.Device import Device
 from .....device.service.reading.CreateReadingService import CreateReadingService
+from .....shared.utils.AppError import AppError, AppErrors
 
 
 class DeviceWSController:
     @staticmethod
-    async def reading_listener(websocket: WebSocket, id: UUID):
+    async def device_listener(websocket: WebSocket, id: UUID):
         client_connected = True
         device_json = ''
 
-        def reading_listener(device: Device):
+        def change_handler(device: Device):
             nonlocal device_json
             device_json = json.dumps(device.to_dict())
 
         try:
-            CreateReadingService.add_listener(reading_listener)
-
             await websocket.accept()
 
+            device_repository = DeviceRepository()
+            if not device_repository.find_by_id(id):
+                raise AppError(AppErrors.DEVICE_NOT_FOUND)
+
+            CreateReadingService.add_listener(id, change_handler)
+
             while client_connected:
-                await asyncio.sleep(1)
                 await websocket.send_text(device_json)
                 device_json = ''
+                await asyncio.sleep(1)
 
-        except Exception as e:
+        except:
             client_connected = False
-            CreateReadingService.remove_listener(reading_listener)
+            await websocket.close()
+            CreateReadingService.remove_listener(id, change_handler)

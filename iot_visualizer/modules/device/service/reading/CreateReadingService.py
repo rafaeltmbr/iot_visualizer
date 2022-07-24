@@ -1,16 +1,16 @@
 from typing import Callable
 
+from ...infra.sqlalchemy.models.Device import Device
 from ...utils.is_reading_value_valid import is_reading_value_valid
 from ...repositories.IReadingRepository import IReadingRepository
 from ...repositories.IAttributeRepository import IAttributeRepository
 from ...repositories.IDeviceRepository import IDeviceRepository
 from ...dto.reading.CreateReadingDTO import CreateReadingDTO
-from ...infra.sqlalchemy.models.Reading import Reading
 from ....shared.utils.AppError import AppError, AppErrors
 
 
 class CreateReadingService():
-    listeners: list[Callable] = []
+    device_listeners: dict[str, list[Callable]] = {}
 
     def __init__(self, reading_repository: IReadingRepository, attribute_repository: IAttributeRepository, device_repository: IDeviceRepository):
         self.reading_repository = reading_repository
@@ -37,22 +37,35 @@ class CreateReadingService():
 
 
     @classmethod
-    def add_listener(cls, listener: Callable):
-        if listener not in cls.listeners:
-            cls.listeners.append(listener)
+    def add_listener(cls, device_id: str, listener: Callable):
+        listeners = cls.device_listeners.get(device_id)
+        if not listeners:
+            listeners = []
+            cls.device_listeners[device_id] = listeners
+
+        if listener not in listeners:
+            listeners.append(listener)
 
 
     @classmethod
-    def remove_listener(cls, listener: Callable):
-        if listener in cls.listeners:
-            cls.listeners.remove(listener)
+    def remove_listener(cls, device_id: str, listener: Callable):
+        listeners = cls.device_listeners.get(device_id)
+        if not listeners:
+            return
+
+        if listener in listeners:
+            listeners.remove(listener)
 
 
     @classmethod
-    def call_listeners(cls, reading: Reading):
-        for listener in cls.listeners[:]:
+    def call_listeners(cls, device: Device):
+        listeners = cls.device_listeners.get(device.id)
+        if not listeners:
+            return
+
+        for listener in listeners[:]:
             try:
-                listener(reading)
+                listener(device)
 
             except:
-                cls.listeners.remove(listener)
+                listeners.remove(listener)
