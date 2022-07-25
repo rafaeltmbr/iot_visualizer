@@ -6,7 +6,7 @@ class ShowDeviceService:
         self.device_repository = device_repository
 
     async def execute(self, id):
-        device = self.device_repository.find_by_id_with_relations(id)
+        device = self.device_repository.find_by_id_with_attributes_and_readings(id)
 
         if not device:
             raise AppError(AppErrors.DEVICE_NOT_FOUND)

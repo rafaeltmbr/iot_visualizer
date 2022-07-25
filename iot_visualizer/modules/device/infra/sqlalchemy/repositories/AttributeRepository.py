@@ -19,7 +19,7 @@ class AttributeRepository(IAttributeRepository):
             AttributeRepository.session = Session(db_engine)
 
 
-    def list(self) -> list[Attribute]:
+    def list_all(self) -> list[Attribute]:
         return AttributeRepository.session.query(Attribute).all()
 
 

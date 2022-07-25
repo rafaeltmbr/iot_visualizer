@@ -1,21 +1,20 @@
-from fastapi import Request, Response
+from fastapi import Request, Response, status
 
-from ..schemas.CreateReadingSchema import CreateReadingSchema
+from ..schemas.CreateReadingSchema import CreateReadingsSchema
+from ...sqlalchemy.models.Device import Device
 from ...sqlalchemy.repositories.ReadingRepository import ReadingRepository
-from ...sqlalchemy.repositories.AttributeRepository import AttributeRepository
 from ...sqlalchemy.repositories.DeviceRepository import DeviceRepository
-from ....service.reading.CreateReadingService import CreateReadingService
+from ....service.reading.CreateReadingsService import CreateReadingsService
 from ....dto.reading.CreateReadingDTO import CreateReadingDTO
 
 
 class ReadingController:
     @staticmethod
-    async def create(req: Request, res: Response, body: CreateReadingSchema):
-        createReading = CreateReadingService(ReadingRepository(), AttributeRepository(), DeviceRepository())
+    async def create(req: Request, res: Response, body: CreateReadingsSchema):
+        createReading = CreateReadingsService(ReadingRepository(), DeviceRepository())
 
-        reading = await createReading.execute( CreateReadingDTO(
-            attribute_id = body.attribute_id,
-            value = body.value,
-        ))
+        readings = [CreateReadingDTO(attribute_id = r.attribute_id, value = r.value) for r in body.readings]
 
-        return reading
+        await createReading.execute(readings, req.device)
+
+        res.status_code = status.HTTP_204_NO_CONTENT

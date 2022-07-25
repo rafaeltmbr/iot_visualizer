@@ -8,7 +8,7 @@ from ..infra.sqlalchemy.models.Attribute import Attribute
 
 class IAttributeRepository(ABC):
     @abstractmethod
-    def list(self) -> list[Attribute]: raise NotImplementedError
+    def list_all(self) -> list[Attribute]: raise NotImplementedError
 
     @abstractmethod
     def find_by_id(self, id: UUID) -> Union[Attribute, None]: raise NotImplementedError

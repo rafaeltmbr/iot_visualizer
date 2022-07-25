@@ -1,39 +1,55 @@
 from typing import Callable
 
+from ...infra.sqlalchemy.models.Reading import Reading
 from ...infra.sqlalchemy.models.Device import Device
 from ...utils.is_reading_value_valid import is_reading_value_valid
 from ...repositories.IReadingRepository import IReadingRepository
-from ...repositories.IAttributeRepository import IAttributeRepository
 from ...repositories.IDeviceRepository import IDeviceRepository
 from ...dto.reading.CreateReadingDTO import CreateReadingDTO
 from ....shared.utils.AppError import AppError, AppErrors
 
 
-class CreateReadingService():
+class CreateReadingsService():
     device_listeners: dict[str, list[Callable]] = {}
 
-    def __init__(self, reading_repository: IReadingRepository, attribute_repository: IAttributeRepository, device_repository: IDeviceRepository):
+    def __init__(self, reading_repository: IReadingRepository, device_repository: IDeviceRepository):
         self.reading_repository = reading_repository
-        self.attribute_repository = attribute_repository
         self.device_repository = device_repository
 
-    async def execute(self, data: CreateReadingDTO):
-        attribute = self.attribute_repository.find_by_id(data.attribute_id)
-        if not attribute:
-            raise AppError(AppErrors.ATTRIBUTE_NOT_FOUND)
+    async def execute(self, data: list[CreateReadingDTO], device: Device) -> None:
+        readings: list[Reading] = CreateReadingsService.remove_duplicate_readings(data)
 
-        if not is_reading_value_valid(data.value, attribute.type.value):
-            raise AppError(AppErrors.INVALID_READING_VALUE)
+        attribute_map = {}
+        for attribute in device.attributes:
+            attribute_map[attribute.id] = attribute
 
-        reading = self.reading_repository.create(data)
+        for reading in readings:
+            attribute = attribute_map.get(reading.attribute_id)
 
-        device = self.device_repository.find_by_id_with_relations(attribute.device_id)
+            if not attribute:
+                raise AppError(AppErrors.NOT_AUTHORIZED_TO_CREATE_ATTRIBUTE_READING)
+
+            if not is_reading_value_valid(reading.value, attribute.type.value):
+                raise AppError(AppErrors.INVALID_READING_VALUE)
+
+
+        self.reading_repository.create_many(readings)
+
+        device = self.device_repository.find_by_id_with_attributes_and_readings(attribute.device_id)
         if not device:
             raise AppError(AppErrors.DEVICE_NOT_FOUND)
 
-        CreateReadingService.call_listeners(device)
+        CreateReadingsService.call_listeners(device)
 
-        return reading
+
+    @staticmethod
+    def remove_duplicate_readings(readings: list[CreateReadingDTO]):
+        filtered_readings = {}
+
+        for reading in readings:
+            filtered_readings[reading.attribute_id] = reading
+
+        return [reading for id, reading in filtered_readings.items()]
 
 
     @classmethod

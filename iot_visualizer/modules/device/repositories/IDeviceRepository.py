@@ -8,13 +8,16 @@ from ..infra.sqlalchemy.models.Device import Device
 
 class IDeviceRepository(ABC):
     @abstractmethod
-    def list(self) -> list[Device]: raise NotImplementedError
+    def list_all(self) -> list[Device]: raise NotImplementedError
 
     @abstractmethod
     def find_by_id(self, id: UUID) -> Union[Device, None]: raise NotImplementedError
 
     @abstractmethod
-    def find_by_id_with_relations(self, id: UUID) -> Union[Device, None]: raise NotImplementedError
+    def find_by_id_with_attributes(self, id: UUID) -> Union[Device, None]: raise NotImplementedError
+
+    @abstractmethod
+    def find_by_id_with_attributes_and_readings(self, id: UUID) -> Union[Device, None]: raise NotImplementedError
 
     @abstractmethod
     def find_by_name(self, name: str) -> Union[Device, None]: raise NotImplementedError

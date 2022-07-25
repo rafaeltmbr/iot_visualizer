@@ -17,14 +17,20 @@ class DeviceRepository(IDeviceRepository):
             DeviceRepository.session = Session(db_engine)
 
 
-    def list(self) -> list[Device]:
+    def list_all(self) -> list[Device]:
         return DeviceRepository.session.query(Device).all()
 
 
     def find_by_id(self, id: UUID) -> Union[Device, None]:
         return DeviceRepository.session.scalar(select(Device).where(Device.id == id))
 
-    def find_by_id_with_relations(self, id: UUID) -> Union[Device, None]:
+
+    def find_by_id_with_attributes(self, id: UUID) -> Union[Device, None]:
+        query = select(Device).options(joinedload('attributes')).where(Device.id == id)
+        return DeviceRepository.session.scalar(query)
+
+
+    def find_by_id_with_attributes_and_readings(self, id: UUID) -> Union[Device, None]:
         query = select(Device).options(joinedload('attributes').joinedload('readings')).where(Device.id == id)
         return DeviceRepository.session.scalar(query)
 

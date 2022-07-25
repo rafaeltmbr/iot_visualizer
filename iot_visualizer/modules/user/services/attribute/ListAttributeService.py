@@ -6,5 +6,5 @@ class ListAttributeService:
         self.attribute_repository = attribute_repository
 
     async def execute(self):
-        return self.attribute_repository.list()
+        return self.attribute_repository.list_all()
 

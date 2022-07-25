@@ -74,6 +74,11 @@ class AppErrors(Enum):
         'Invalid reading value'
     )
 
+    NOT_AUTHORIZED_TO_CREATE_ATTRIBUTE_READING = ErrorData(
+        status.HTTP_401_UNAUTHORIZED,
+        'Not authorized to create a reading for the given attribute'
+    )
+
 
 class AppError(Exception):
     def __init__(self, error: AppErrors):

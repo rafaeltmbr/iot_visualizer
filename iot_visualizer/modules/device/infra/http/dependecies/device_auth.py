@@ -34,3 +34,4 @@ def device_auth(req: Request):
     if device.secret != secret:
         raise AppError(AppErrors.INVALID_DEVICE_TOKEN)
 
+    req.device = device

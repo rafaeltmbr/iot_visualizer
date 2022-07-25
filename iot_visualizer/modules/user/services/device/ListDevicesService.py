@@ -5,4 +5,4 @@ class ListDevicesService():
         self.device_repository = device_repository
 
     async def execute(self):
-        return self.device_repository.list()
+        return self.device_repository.list_all()

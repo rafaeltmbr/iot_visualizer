@@ -16,11 +16,14 @@ class ReadingRepository(IReadingRepository):
         if not ReadingRepository.session:
             ReadingRepository.session = Session(db_engine)
 
-    def list(self) -> list[Reading]:
+
+    def list_all(self) -> list[Reading]:
         return ReadingRepository.session.query(Reading).all()
+
 
     def find_by_id(self, id: UUID) -> Union[Reading, None]:
         return ReadingRepository.session.scalar(select(Reading).where(Reading.id == id))
+
 
     def create(self, dto: CreateReadingDTO) -> Reading:
         reading = Reading(
@@ -33,9 +36,23 @@ class ReadingRepository(IReadingRepository):
 
         return ReadingRepository.session.scalar(select(Reading).where(Reading.id == reading.id))
 
+
+    def create_many(self, dtos: CreateReadingDTO) -> None:
+        for dto in dtos:
+            reading = Reading(
+                attribute_id = dto.attribute_id,
+                value = dto.value,
+            )
+
+            ReadingRepository.session.add(reading)
+
+        ReadingRepository.session.commit()
+
+
     def update(self, reading: Reading) -> Reading:
         ReadingRepository.session.commit()
         return ReadingRepository.session.scalar(select(Reading).where(Reading.id == reading.id))
+
 
     def delete(self, reading: Reading) -> None:
         ReadingRepository.session.delete(reading)

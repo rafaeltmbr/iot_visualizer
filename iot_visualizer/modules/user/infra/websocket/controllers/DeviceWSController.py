@@ -5,7 +5,7 @@ import asyncio
 
 from .....device.infra.sqlalchemy.repositories.DeviceRepository import DeviceRepository
 from .....device.infra.sqlalchemy.models.Device import Device
-from .....device.service.reading.CreateReadingService import CreateReadingService
+from .....device.service.reading.CreateReadingsService import CreateReadingsService
 from .....shared.utils.AppError import AppError, AppErrors
 
 
@@ -26,7 +26,7 @@ class DeviceWSController:
             if not device_repository.find_by_id(id):
                 raise AppError(AppErrors.DEVICE_NOT_FOUND)
 
-            CreateReadingService.add_listener(id, change_handler)
+            CreateReadingsService.add_listener(id, change_handler)
 
             while client_connected:
                 await websocket.send_text(device_json)
@@ -36,4 +36,4 @@ class DeviceWSController:
         except:
             client_connected = False
             await websocket.close()
-            CreateReadingService.remove_listener(id, change_handler)
+            CreateReadingsService.remove_listener(id, change_handler)
